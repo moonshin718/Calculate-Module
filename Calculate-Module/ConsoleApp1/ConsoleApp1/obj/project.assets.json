@@ -8,23 +8,23 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\newmo\\.nuget\\packages\\": {},
+    "C:\\Users\\bit\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\source\\repos\\moonshin718\\Calculate-Module\\moonshin718\\Calculate-Module\\Calculate-Module\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "C:\\Users\\bit\\MyProject\\Calculate-Module\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "D:\\Code\\source\\repos\\moonshin718\\Calculate-Module\\moonshin718\\Calculate-Module\\Calculate-Module\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
-      "packagesPath": "C:\\Users\\newmo\\.nuget\\packages\\",
-      "outputPath": "D:\\Code\\source\\repos\\moonshin718\\Calculate-Module\\moonshin718\\Calculate-Module\\Calculate-Module\\ConsoleApp1\\ConsoleApp1\\obj\\",
+      "projectPath": "C:\\Users\\bit\\MyProject\\Calculate-Module\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "packagesPath": "C:\\Users\\bit\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\bit\\MyProject\\Calculate-Module\\ConsoleApp1\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\newmo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\bit\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }
