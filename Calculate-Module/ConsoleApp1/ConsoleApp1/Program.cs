@@ -68,8 +68,22 @@ namespace ConsoleApp1
                 //Console.WriteLine(i+"\t"+Rs_r + "\t" + Rs_p);
                 Console.WriteLine(Rs_r + " " + Rs_p);
             }
+            double mse = 0;
+            for (int i = 0; i < L_SiO2nm_on_Si_new.Count; i++) {
+                Complex N2 = new Complex(L_Si_new[k].n, L_Si_new[k].k);
+                Complex theta2 = cal.CalSnell(cal.DegreeToRadian(65), 1, N2);
 
+                Complex rp = cal.Calrp(cal.DegreeToRadian(65), theta2, 1, N2);
+                Complex rs = cal.Calrs(cal.DegreeToRadian(65), theta2, 1, N2);
 
+                double Rs_r = cal.CalRs_rate(rs);
+                double Rs_p = cal.CalRp_rate(rp);
+                double alpha = cal.calculateAlpha_cal(cal.DegreeToRadian(45), rs, rp);
+                double beta = cal.calculateBeta_cal(cal.DegreeToRadian(45), rs, rp);
+                mse += Math.Pow((L_SiO2nm_on_Si_new[i].alpha - alpha), 2) + Math.Pow((L_SiO2nm_on_Si_new[i].beta - beta), 2);
+
+            }
+            Console.WriteLine((1 / L_SiO2nm_on_Si_new.Count) * mse);
         }
     }
 }
