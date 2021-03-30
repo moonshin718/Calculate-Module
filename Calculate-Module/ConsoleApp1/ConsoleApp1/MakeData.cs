@@ -8,9 +8,10 @@ namespace ConsoleApp1
 {
     class MakeData
     {
+        string mainpath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
         public List<SiO2nm_on_Si_new> make_SiO2nm_on_Si_new(List<SiO2nm_on_Si> data)
         {
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SiO2nm_on_Si_new.dat");
+            StreamWriter outputFile = new StreamWriter(mainpath+@"\SiO2nm_on_Si_new.dat");
             List<SiO2nm_on_Si_new> L_siO2Nm_On_Si_News = new List<SiO2nm_on_Si_new>();
             string Header = "wavelength" + "\t" + "aoi" + "\t" + "alpha" + "\t" + "beta" + "\r\n";
             outputFile.Write(Header);
@@ -42,7 +43,7 @@ namespace ConsoleApp1
 
         public List<Si_nm> make_nm_Si(List<Si> data)
         {
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\Si_nm.txt");
+            StreamWriter outputFile = new StreamWriter(mainpath+@"\Si_nm.txt");
             List<Si_nm> L_Si_nm = new List<Si_nm>();
             string Header = "wavelength" + "\t" + "n" + "\t" + "k" + "\r\n";
             outputFile.Write(Header);
@@ -68,7 +69,7 @@ namespace ConsoleApp1
         }
         public List<SiO2_nm> make_nm_SiO2(List<SiO2> data)
         {
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SIO2_nm.txt");
+            StreamWriter outputFile = new StreamWriter(mainpath+@"\SIO2_nm.txt");
             List<SiO2_nm> L_SiO2_nm = new List<SiO2_nm>();
 
             string Header = "wavelength" + "\t" + "n" + "\t" + "k" + "\r\n";
@@ -95,7 +96,7 @@ namespace ConsoleApp1
 
         public List<Si_new> make_new_Si(List<Si_nm> data, List<SiO2nm_on_Si_new> wave)
         {
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\Si_new.txt");
+            StreamWriter outputFile = new StreamWriter(mainpath+@"\Si_new.txt");
             var n_itp = new Dictionary<double, double>();
             var k_itp = new Dictionary<double, double>();
 
@@ -152,7 +153,7 @@ namespace ConsoleApp1
 
         public List<SiO2_new> make_new_SiO2(List<SiO2_nm> data, List<SiO2nm_on_Si_new> wave)
         {
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SiO2_new.txt");
+            StreamWriter outputFile = new StreamWriter(mainpath+@"\SiO2_new.txt");
             var n_itp = new Dictionary<double, double>();
             var k_itp = new Dictionary<double, double>();
 
@@ -203,7 +204,7 @@ namespace ConsoleApp1
 
         public List<SiN_new> make_new_SiN(List<SiN> data, List<SiO2nm_on_Si_new> wave)
         {
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SiN_new.txt");
+            StreamWriter outputFile = new StreamWriter(mainpath+@"\SiN_new.txt");
             var n_itp = new Dictionary<double, double>();
             var k_itp = new Dictionary<double, double>();
 

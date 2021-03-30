@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.IO;
 
 namespace ConsoleApp1
 {
     class LoadData
     {
+        string mainpath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+
         public List<Si> Load_Si()
         {
             List<Si> L_si = new List<Si>();
 
-            String filename = @"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\Si.txt";
+            String filename = mainpath+@"\Si.txt";
             string textvalue = System.IO.File.ReadAllText(filename);
             string paserkey = "\r\n";
             string[] token = textvalue.Split(paserkey, StringSplitOptions.RemoveEmptyEntries);
@@ -37,7 +40,7 @@ namespace ConsoleApp1
             List<SiO2> L_sio2 = new List<SiO2>();
 
 
-            String filename = @"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SIO2.txt";
+            String filename = mainpath+@"\SIO2.txt";
             string textvalue = System.IO.File.ReadAllText(filename);
             string paserkey = "\r\n";
             string[] token = textvalue.Split(paserkey, StringSplitOptions.RemoveEmptyEntries);
@@ -61,7 +64,7 @@ namespace ConsoleApp1
         {
             List<SiN> L_SiN = new List<SiN>();
 
-            String filename = @"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SiN.txt";
+            String filename = mainpath+@"\SiN.txt";
             string textvalue = System.IO.File.ReadAllText(filename);
             string paserkey = "\r\n";
             string[] token = textvalue.Split(paserkey, StringSplitOptions.RemoveEmptyEntries);
@@ -85,7 +88,7 @@ namespace ConsoleApp1
         public List<SiO2nm_on_Si> Load_SiO2nm_on_Si()
         {
             List<SiO2nm_on_Si> L_SiO2_nm_on_Si = new List<SiO2nm_on_Si>();
-            String filename = @"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SiO2 2nm_on_Si.dat";
+            String filename = mainpath+@"\SiO2 2nm_on_Si.dat";
             string textvalue = System.IO.File.ReadAllText(filename);
             string paserkey = "\r\n";
             string[] token = textvalue.Split(paserkey, StringSplitOptions.RemoveEmptyEntries);
@@ -112,7 +115,7 @@ namespace ConsoleApp1
         {
             List<Si_new> L_si_new = new List<Si_new>();
 
-            String filename = @"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\Si_new.txt";
+            String filename = mainpath+@"\Si_new.txt";
             string textvalue = System.IO.File.ReadAllText(filename);
             string paserkey = "\r\n";
             string[] token = textvalue.Split(paserkey, StringSplitOptions.RemoveEmptyEntries);
@@ -139,7 +142,7 @@ namespace ConsoleApp1
             List<SiO2_new> L_sio2_new = new List<SiO2_new>();
 
 
-            String filename = @"C:\Users\bit\source\repos\ConsoleApp1\ConsoleApp1\SiO2_2nm_on_Si_new.txt";
+            String filename = mainpath+@"\SiO2_2nm_on_Si_new.txt";
             string textvalue = System.IO.File.ReadAllText(filename);
             string paserkey = "\r\n";
             string[] token = textvalue.Split(paserkey, StringSplitOptions.RemoveEmptyEntries);
