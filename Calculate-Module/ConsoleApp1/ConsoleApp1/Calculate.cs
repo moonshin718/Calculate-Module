@@ -50,24 +50,18 @@ namespace ConsoleApp1
             return rs;
         }
 
-        public double CalRp_rate(Complex rp)
+        public double CalR_rate(Complex r)
         {
-            double Rp_r = Math.Pow(rp.Magnitude, 2);
+            double R_r = Math.Pow(r.Magnitude, 2);
 
-            return Rp_r;
-        }
-        public double CalRs_rate(Complex rs)
-        {
-            double Rs_r = Math.Pow(rs.Magnitude, 2);
-
-            return Rs_r;
+            return R_r;
         }
 
         //p= radian
         public double calculateAlpha_cal(double aoi_p, Complex rs, Complex rp)
         {
-            double Rs_r = CalRs_rate(rs);
-            double Rp_r = CalRs_rate(rp);
+            double Rs_r = CalR_rate(rs);
+            double Rp_r = CalR_rate(rp);
             double alpha = (Rp_r * Math.Pow(Math.Cos(aoi_p), 2) - Rs_r * Math.Pow(Math.Sin(aoi_p), 2)) / (Rp_r * Math.Pow(Math.Cos(aoi_p), 2) + Rs_r * Math.Pow(Math.Sin(aoi_p), 2));
 
             return alpha;
@@ -76,11 +70,22 @@ namespace ConsoleApp1
         //p= radian
         public double calculateBeta_cal(double aoi_p, Complex rs, Complex rp)
         {
-            double Rs_r = CalRs_rate(rs);
-            double Rp_r = CalRs_rate(rp);
+            double Rs_r = CalR_rate(rs);
+            double Rp_r = CalR_rate(rp);
             double beta = (2 * (rp * Complex.Conjugate(rs)).Real * Math.Cos(aoi_p) * Math.Sin(aoi_p)) / (Rp_r * Math.Pow(Math.Cos(aoi_p), 2) + Rs_r * Math.Pow(Math.Sin(aoi_p), 2));
 
             return beta;
+        }
+
+        public double calculateMSE(CalSpectrum[] calSpectrums, List<SiO2nm_on_Si_new> data)
+        {
+            double mse = 0;
+            for (int i = 0; i < calSpectrums.Length; i++)
+            {
+                mse += Math.Pow(data[i].alpha - calSpectrums[i].alpha, 2) + Math.Pow(data[i].beta - calSpectrums[i].beta, 2);
+            }
+
+            return (1 / (double)calSpectrums.Length) * mse;
         }
     }
 }

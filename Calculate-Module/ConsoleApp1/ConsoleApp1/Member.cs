@@ -28,4 +28,25 @@ namespace ConsoleApp1
     {
         public double nm, aoi, Psi, Delta;
     }
+
+    class CalSpectrum
+    {
+        public double wavelength;
+        public double aoi;
+        public double alpha;
+        public double beta;
+
+        public CalSpectrum(double wavelength, double aoi, double alpha, double beta)
+        {
+            this.wavelength = wavelength;
+            this.aoi = aoi;
+            this.alpha = alpha;
+            this.beta = beta;
+        }
+
+        public override string ToString()
+        {
+            return this.wavelength + "\t" + this.aoi + "\t" + this.alpha + "\t" + this.beta;
+        }
+    }
 }
