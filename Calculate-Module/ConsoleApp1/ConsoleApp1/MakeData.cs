@@ -23,8 +23,10 @@ namespace ConsoleApp1
                 {
                     outputFile.Write(item.nm + "\t");
                     outputFile.Write(item.aoi + "\t");
-                    double alpha = cal.calculateAlpha_exp(item.Psi, item.Delta);
-                    double beta = cal.calculateAlpha_exp(item.Psi, item.Delta);
+                    double Psi_radian = cal.DegreeToRadian(item.Psi);
+                    double Delta_radian = cal.DegreeToRadian(item.Delta);
+                    double alpha = cal.calculateAlpha_exp(Psi_radian);
+                    double beta = cal.calculateBeta_exp(Psi_radian, Delta_radian);
                     outputFile.Write(alpha + "\t");
                     outputFile.Write(beta + "\r\n");
                     SiO2nm_on_Si_new_data.nm = item.nm;

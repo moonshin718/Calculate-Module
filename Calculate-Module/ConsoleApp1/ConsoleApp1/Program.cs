@@ -18,7 +18,7 @@ namespace ConsoleApp1
             List<Si_nm> L_Si_nm = new List<Si_nm>(); List<SiO2_nm> L_SiO2_nm = new List<SiO2_nm>();
             List<Si_new> L_Si_new = new List<Si_new>(); List<SiO2_new> L_SiO2_new = new List<SiO2_new>(); List<SiN_new> L_SiN_new = new List<SiN_new>();
             LoadData loding = new LoadData();    MakeData making = new MakeData();    Calculate cal = new Calculate();
-            double theta45 = cal.DegreeToRadian(45);
+            double aoi_p = cal.DegreeToRadian(45);
             double theta65 = cal.DegreeToRadian(65);
             //데이터 로딩
             L_SiO2nm_on_Si = loding.Load_SiO2nm_on_Si();
@@ -76,8 +76,8 @@ namespace ConsoleApp1
                 Complex rp = cal.Calrp(theta65, theta2, 1, N2);
                 Complex rs = cal.Calrs(theta65, theta2, 1, N2);
                 Complex p = rp / rs;
-                double alpha = cal.calculateAlpha_cal(theta45, rs, rp);
-                double beta = cal.calculateBeta_cal(theta45, rs, rp);
+                double alpha = cal.calculateAlpha_cal(aoi_p, rs, rp);
+                double beta = cal.calculateBeta_cal(aoi_p, rs, rp);
                 //Console.WriteLine(alpha + "  " + beta);
 
             }
@@ -105,8 +105,8 @@ namespace ConsoleApp1
 
                     double Rs_r = cal.CalR_rate(rs);
                     double Rs_p = cal.CalR_rate(rp);
-                    double alpha = cal.calculateAlpha_cal(theta45, rs, rp);
-                    double beta = cal.calculateBeta_cal(theta45, rs, rp);
+                    double alpha = cal.calculateAlpha_cal(aoi_p, rs, rp);
+                    double beta = cal.calculateBeta_cal(aoi_p, rs, rp);
                     Si_Cal[j] = new CalSpectrum(L_Si_new[j].nm, i, alpha, beta);
 
 

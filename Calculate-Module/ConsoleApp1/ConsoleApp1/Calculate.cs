@@ -11,12 +11,11 @@ namespace ConsoleApp1
         {
             return (Math.PI * angle) / 180.0f;
         }
-        public double calculateAlpha_exp(double psi, double delta)
+        public double calculateAlpha_exp(double psi)
         {
             double result = 0;
             double tan45 = Math.Tan(DegreeToRadian(45));
             double TanPsi = Math.Tan(psi);
-            double TanDelta = Math.Tan(delta);
             result = (Math.Pow(TanPsi, 2) - Math.Pow(tan45, 2)) / (Math.Pow(TanPsi, 2) + Math.Pow(tan45, 2));
             return result;
         }
