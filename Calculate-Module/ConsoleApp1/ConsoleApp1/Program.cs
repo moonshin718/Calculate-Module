@@ -80,12 +80,10 @@ namespace ConsoleApp1
 
             //mse 계산
             double mse = 0;
-            for(int j=40;j<80;j+=5)
-            {
-                String.Format("mse_{0}", j);
-                StreamWriter outputFile = new StreamWriter(mainpath + @"/mse/" + String.Format("mse_{0}.txt", j));
-                string Header = "wavelength" + "\t" + "mse" + "\r\n";
-                outputFile.Write(Header);
+            StreamWriter outputFile = new StreamWriter(mainpath + @"/mse/" + "mse.txt");
+            string Header = "wavelength" + "\t" + "mse" + "\r\n";
+            outputFile.Write(Header);
+
                 for (int i = 0; i < L_SiO2nm_on_Si_new.Count; i++)
                 {
                    
@@ -101,11 +99,10 @@ namespace ConsoleApp1
                     double beta = cal.calculateBeta_cal(theta45, rs, rp);
                     mse += Math.Pow((L_SiO2nm_on_Si_new[i].alpha - alpha), 2) + Math.Pow((L_SiO2nm_on_Si_new[i].beta - beta), 2);
 
-                    outputFile.Write(L_Si_new[i].nm + "\t");
                     outputFile.Write(mse + "\r\n");
                 }
                 outputFile.Close();
-            }
+
            
             Console.WriteLine((1 / L_SiO2nm_on_Si_new.Count) * mse);
         }
