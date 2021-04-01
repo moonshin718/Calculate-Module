@@ -18,7 +18,7 @@ namespace ConsoleApp2
             //Si 기판(substrate)과 SiO2(thin film)의 물성 값을 읽기
             L_Si_new = reader.Read_Si_new(program_path);
             L_SiO2_new = reader.Read_SiO2_new(program_path);
-            
+
 
             //2-1
 
@@ -29,8 +29,8 @@ namespace ConsoleApp2
             //exp alphs beta 얻기
             foreach (var item in L_SiO2_1000nm_on_Si)
             {
-               
-              
+
+
             }
 
             StreamWriter outputFile = new StreamWriter(program_path + @"\SiO2_1000nm_on_Si_AB.txt");
@@ -40,8 +40,11 @@ namespace ConsoleApp2
             outputFile.Write(Header);
             outputFile1.Write(Header);
             outputFile2.Write(Header);
+
+            List<double> measure_a = new List<double>();
+            List<double> measure_b = new List<double>();
             //alpha beta 구하기 모델 세우기
-            for (int i=0;i< L_SiO2_1000nm_on_Si.Count;i++)
+            for (int i = 0; i < L_SiO2_1000nm_on_Si.Count; i++)
             {
 
                 //SiO2_1000nm_on_Si 측정값의 alpha, beta
@@ -50,6 +53,8 @@ namespace ConsoleApp2
 
                 double alpha = cal.calculateAlpha_exp(psi_radian);
                 double beta = cal.calculateBeta_exp(psi_radian, delta_radian);
+                measure_a.Add(alpha);
+                measure_b.Add(beta);
                 outputFile.Write(L_SiO2_1000nm_on_Si[i].nm + "\t");
                 outputFile.Write(L_SiO2_1000nm_on_Si[i].aoi + "\t");
                 outputFile.Write(alpha + "\t");
@@ -67,8 +72,8 @@ namespace ConsoleApp2
                 Complex rp_12 = cal.Cal_rp(theta2_01, theta2_12, N1, N2);
                 Complex rs_12 = cal.Cal_rs(theta2_01, theta2_12, N1, N2);
 
-                
-                Complex beta_thickness = cal.DegreeToRadian(360.0f)*(1000 / L_SiO2_1000nm_on_Si[i].nm) * N1 * Complex.Cos(theta2_01);
+
+                Complex beta_thickness = cal.DegreeToRadian(360.0f) * (1000 / L_SiO2_1000nm_on_Si[i].nm) * N1 * Complex.Cos(theta2_01);
                 Complex minus_i = new Complex(0, -1);
                 Complex e_minus_i = Complex.Exp(minus_i);
                 Complex e_minus_2bi = Complex.Pow(e_minus_i, 2 * beta_thickness);
@@ -92,14 +97,14 @@ namespace ConsoleApp2
                     outputFile1.Write(item_data.beta + "\r\n");
                     L_SiO2_1000nm_on_Si_new.Add(item_data);
                 }
-               
+
 
                 //항의 개수가 정해저 있을때 rs,rp
                 Complex rp_n = cal.Cal_rn(2000, rp_01, rp_12, e_minus_2bi);
                 Complex rs_n = cal.Cal_rn(2000, rs_01, rs_12, e_minus_2bi);
 
                 //무한급수의 항의 개수에 따른 alpha, beta
-                
+
                 double alpha_cal = cal.calculateAlpha_cal(aoi_p, rs_n, rp_n);
                 double beta_cal = cal.calculateBeta_cal(aoi_p, rs_n, rp_n);
                 outputFile2.Write(L_SiO2_1000nm_on_Si[i].nm + "\t");
@@ -110,16 +115,32 @@ namespace ConsoleApp2
                 L_CalSpectrum.Add(cal_data);
 
 
-                Console.WriteLine(L_CalSpectrum[i].alpha+"   "+ L_SiO2_1000nm_on_Si_new[i].alpha);
             }
             outputFile.Close();
             outputFile1.Close();
             outputFile2.Close();
             //mse 계산
+            //measure_To_Fresnel
+            double mse_measure_To_Fresnel;
+            double mse = 0;
+            for (int i = 0; i < L_CalSpectrum.Count; i++)
+            {
+                mse += Math.Pow(measure_a[i] - L_SiO2_1000nm_on_Si_new[i].alpha, 2) + Math.Pow(measure_b[i] - L_SiO2_1000nm_on_Si_new[i].beta, 2);
+            }
+            mse_measure_To_Fresnel = (1 / (double)L_CalSpectrum.Count) * mse;
+            Console.WriteLine(mse_measure_To_Fresnel);
 
-            double mse = cal.calculateMSE(L_CalSpectrum, L_SiO2_1000nm_on_Si_new);
+            //mse_Fresnel_To_Number
+            double mse_Fresnel_To_Number;
+            mse = 0;
+            for (int i = 0; i < L_CalSpectrum.Count; i++)
+            {
+                mse += Math.Pow(L_SiO2_1000nm_on_Si_new[i].alpha - L_CalSpectrum[i].alpha, 2) + Math.Pow(L_SiO2_1000nm_on_Si_new[i].beta - L_CalSpectrum[i].beta, 2);
+            }
+            mse_Fresnel_To_Number = (1 / (double)L_CalSpectrum.Count) * mse;
 
-            Console.WriteLine(mse);
+
+            Console.WriteLine(mse_Fresnel_To_Number);
 
         }
     }
