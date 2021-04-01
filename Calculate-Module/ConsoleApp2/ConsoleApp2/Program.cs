@@ -33,9 +33,29 @@ namespace ConsoleApp2
               
             }
 
+            StreamWriter outputFile = new StreamWriter(program_path + @"\SiO2_1000nm_on_Si_AB.txt");
+            StreamWriter outputFile1 = new StreamWriter(program_path + @"\SiO2_1000nm_on_Si_Fresnel_AB.txt");
+            StreamWriter outputFile2 = new StreamWriter(program_path + @"\SiO2_1000nm_on_Si_Nnumber_AB.txt");
+            string Header = "wavelength" + "\t" + "aoi" + "\t" + "alpha" + "\t" + "beta" + "\r\n";
+            outputFile.Write(Header);
+            outputFile1.Write(Header);
+            outputFile2.Write(Header);
             //alpha beta 구하기 모델 세우기
             for (int i=0;i< L_SiO2_1000nm_on_Si.Count;i++)
             {
+
+                //SiO2_1000nm_on_Si 측정값의 alpha, beta
+                double psi_radian = cal.DegreeToRadian(L_SiO2_1000nm_on_Si[i].Psi);
+                double delta_radian = cal.DegreeToRadian(L_SiO2_1000nm_on_Si[i].Delta);
+
+                double alpha = cal.calculateAlpha_exp(psi_radian);
+                double beta = cal.calculateBeta_exp(psi_radian, delta_radian);
+                outputFile.Write(L_SiO2_1000nm_on_Si[i].nm + "\t");
+                outputFile.Write(L_SiO2_1000nm_on_Si[i].aoi + "\t");
+                outputFile.Write(alpha + "\t");
+                outputFile.Write(beta + "\r\n");
+
+
                 double aoi_radian = cal.DegreeToRadian(L_SiO2_1000nm_on_Si[i].aoi);
                 Complex N1 = new Complex(L_SiO2_new[i].n, -L_SiO2_new[i].k);
                 Complex theta2_01 = cal.Cal_Snell(aoi_radian, 1, N1);
@@ -57,7 +77,7 @@ namespace ConsoleApp2
                 Complex rp = (rp_01 + rp_12 * e_minus_2bi) / (1 + rp_01 * rp_12 * e_minus_2bi);
                 Complex rs = (rs_01 + rs_12 * e_minus_2bi) / (1 + rs_01 * rs_12 * e_minus_2bi);
 
-                //수렴식에 대해 alpha, beta 스펙트럼 -> exp alpha,beta
+                //수렴식에 대해 alpha, beta 스펙트럼 
                 if (L_SiO2_1000nm_on_Si[i].nm > 350 && L_SiO2_1000nm_on_Si[i].nm < 1000)
                 {
                     SiO2_1000nm_on_Si_new item_data = new SiO2_1000nm_on_Si_new();
@@ -66,6 +86,10 @@ namespace ConsoleApp2
                     item_data.alpha = cal.calculateAlpha_cal(aoi_p, rs, rp);
                     item_data.beta = cal.calculateBeta_cal(aoi_p, rs, rp);
 
+                    outputFile1.Write(L_SiO2_1000nm_on_Si[i].nm + "\t");
+                    outputFile1.Write(L_SiO2_1000nm_on_Si[i].aoi + "\t");
+                    outputFile1.Write(item_data.alpha + "\t");
+                    outputFile1.Write(item_data.beta + "\r\n");
                     L_SiO2_1000nm_on_Si_new.Add(item_data);
                 }
                
@@ -78,15 +102,21 @@ namespace ConsoleApp2
                 
                 double alpha_cal = cal.calculateAlpha_cal(aoi_p, rs_n, rp_n);
                 double beta_cal = cal.calculateBeta_cal(aoi_p, rs_n, rp_n);
+                outputFile2.Write(L_SiO2_1000nm_on_Si[i].nm + "\t");
+                outputFile2.Write(L_SiO2_1000nm_on_Si[i].aoi + "\t");
+                outputFile2.Write(alpha_cal + "\t");
+                outputFile2.Write(beta_cal + "\r\n");
                 CalSpectrum cal_data = new CalSpectrum(L_SiO2_1000nm_on_Si[i].nm, L_SiO2_1000nm_on_Si[i].aoi, alpha_cal, beta_cal);
                 L_CalSpectrum.Add(cal_data);
 
 
                 Console.WriteLine(L_CalSpectrum[i].alpha+"   "+ L_SiO2_1000nm_on_Si_new[i].alpha);
             }
-
+            outputFile.Close();
+            outputFile1.Close();
+            outputFile2.Close();
             //mse 계산
-            
+
             double mse = cal.calculateMSE(L_CalSpectrum, L_SiO2_1000nm_on_Si_new);
 
             Console.WriteLine(mse);

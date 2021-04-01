@@ -7,12 +7,11 @@ namespace ConsoleApp2
 {
     public class Calculate
     {
-        public double calculateAlpha_exp(double psi, double delta)
+        public double calculateAlpha_exp(double psi)
         {
             double Alpha_exp = 0;
             double tan45 = Math.Tan(DegreeToRadian(45));
             double TanPsi = Math.Tan(psi);
-            double TanDelta = Math.Tan(delta);
             Alpha_exp = (Math.Pow(TanPsi, 2) - Math.Pow(tan45, 2)) / (Math.Pow(TanPsi, 2) + Math.Pow(tan45, 2));
             return Alpha_exp;
         }

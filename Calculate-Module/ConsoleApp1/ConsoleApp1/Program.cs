@@ -49,7 +49,9 @@ namespace ConsoleApp1
                     k = i;
                 }
             }
-
+            StreamWriter outputFile_700 = new StreamWriter(mainpath + @"\SiO2nm_on_Si_700.txt");
+            string Header700 = "aoi" + "\t" + "Rs" + "\t" + "Rp" + "\r\n";
+            outputFile_700.Write(Header700);
             for (int i = 40; i < 85; i += 2)
             {
                 double radianAOI = cal.DegreeToRadian(i);
@@ -59,14 +61,16 @@ namespace ConsoleApp1
                 Complex rp = cal.Calrp(radianAOI, theta2, 1, N2);
                 Complex rs = cal.Calrs(radianAOI, theta2, 1, N2);
 
-                double Rs_r = cal.CalR_rate(rs);
-                double Rs_p = cal.CalR_rate(rp);
+                double R_r = cal.CalR_rate(rs);
+                double R_p = cal.CalR_rate(rp);
                 double alpha = cal.calculateAlpha_cal(radianAOI, rs, rp);
                 double beta = cal.calculateBeta_cal(radianAOI, rs, rp);
-                //Console.WriteLine(i+"\t"+Rs_r + "\t" + Rs_p);
-                //Console.WriteLine(Rs_r + " " + Rs_p);
-            }
 
+                outputFile_700.Write(i + "\t");
+                outputFile_700.Write(R_r + "\t");
+                outputFile_700.Write(R_p + "\r\n");
+            }
+            outputFile_700.Close();
             //350~ 1000사이의 파장 rs rp
             foreach (var item in L_SiN_new)
             {
@@ -92,6 +96,9 @@ namespace ConsoleApp1
             
             for (int i = 40; i < 85; i += 5)
             {
+                StreamWriter outputFile = new StreamWriter(mainpath + String.Format(@"\MSE\SiO2nm_on_Si_aoi{0}.txt", i));
+                string Header = "wavelength" + "\t" + "aoi" + "\t" + "alpha" + "\t" + "beta" + "\r\n";
+                outputFile.Write(Header);
                 CalSpectrum[] Si_Cal = new CalSpectrum[L_SiO2nm_on_Si_new.Count];
                 for (int j = 0; j < L_SiO2nm_on_Si_new.Count; j++)
                 {
@@ -102,16 +109,20 @@ namespace ConsoleApp1
 
                     Complex rp = cal.Calrp(radianAOI, theta2, 1, N2);
                     Complex rs = cal.Calrs(radianAOI, theta2, 1, N2);
-
                     double Rs_r = cal.CalR_rate(rs);
                     double Rs_p = cal.CalR_rate(rp);
                     double alpha = cal.calculateAlpha_cal(aoi_p, rs, rp);
                     double beta = cal.calculateBeta_cal(aoi_p, rs, rp);
                     Si_Cal[j] = new CalSpectrum(L_Si_new[j].nm, i, alpha, beta);
 
+                    outputFile.Write(L_SiO2nm_on_Si_new[j].nm + "\t");
+                    outputFile.Write(i + "\t");
+                    outputFile.Write(alpha + "\t");
+                    outputFile.Write(beta + "\r\n");
 
                 }
                 L_CalSpectrum.Add(Si_Cal);
+                outputFile.Close();
             }
             for (int i = 0; i < L_CalSpectrum.Count; i++)
             {

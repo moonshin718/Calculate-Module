@@ -12,9 +12,15 @@ namespace ConsoleApp1
         public List<SiO2nm_on_Si_new> make_SiO2nm_on_Si_new(List<SiO2nm_on_Si> data)
         {
             StreamWriter outputFile = new StreamWriter(mainpath+@"\SiO2nm_on_Si_new.dat");
+            StreamWriter outputFile1 = new StreamWriter(mainpath + @"\SiO2nm_on_Si_new.txt");
+            StreamWriter outputFile2 = new StreamWriter(mainpath+@"\SiO2nm_on_Si_350_1000.txt");
             List<SiO2nm_on_Si_new> L_siO2Nm_On_Si_News = new List<SiO2nm_on_Si_new>();
             string Header = "wavelength" + "\t" + "aoi" + "\t" + "alpha" + "\t" + "beta" + "\r\n";
+
             outputFile.Write(Header);
+            outputFile1.Write(Header);
+            Header = "wavelength" + "\t" + "aoi" + "\t" + "psi" + "\t" + "delta" + "\r\n";
+            outputFile2.Write(Header);
             Calculate cal = new Calculate();
             foreach (var item in data)
             {
@@ -23,12 +29,29 @@ namespace ConsoleApp1
                 {
                     outputFile.Write(item.nm + "\t");
                     outputFile.Write(item.aoi + "\t");
+
+
+                    outputFile1.Write(item.nm + "\t");
+                    outputFile1.Write(item.aoi + "\t");
+
+
+                    outputFile2.Write(item.nm + "\t");
+                    outputFile2.Write(item.aoi + "\t");
+
                     double Psi_radian = cal.DegreeToRadian(item.Psi);
                     double Delta_radian = cal.DegreeToRadian(item.Delta);
                     double alpha = cal.calculateAlpha_exp(Psi_radian);
                     double beta = cal.calculateBeta_exp(Psi_radian, Delta_radian);
+
                     outputFile.Write(alpha + "\t");
                     outputFile.Write(beta + "\r\n");
+
+                    outputFile1.Write(alpha + "\t");
+                    outputFile1.Write(beta + "\r\n");
+
+                    outputFile2.Write(item.Psi + "\t");
+                    outputFile2.Write(item.Delta + "\r\n");
+
                     SiO2nm_on_Si_new_data.nm = item.nm;
                     SiO2nm_on_Si_new_data.aoi = item.aoi;
                     SiO2nm_on_Si_new_data.alpha = alpha;
@@ -39,6 +62,8 @@ namespace ConsoleApp1
 
             }
             outputFile.Close();
+            outputFile1.Close();
+            outputFile2.Close();
 
             return L_siO2Nm_On_Si_News;
         }
