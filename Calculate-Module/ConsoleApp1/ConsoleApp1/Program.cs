@@ -26,34 +26,20 @@ namespace ConsoleApp1
             L_SiO2 = loding.Load_SIO2();
             L_SiN = loding.Load_SiN();
 
-            //물성값 ->nm,n,k 변환
+            //1-1 Psi,Delta->Alpha,Beta
             L_SiO2nm_on_Si_new = making.make_SiO2nm_on_Si_new(L_SiO2nm_on_Si);
+
+            //물성값 ->nm,n,k 변환
             L_Si_nm = making.make_nm_Si(L_Si);
             L_SiO2_nm = making.make_nm_SiO2(L_SiO2);
 
-            //데이터 보간
+            //1-2 데이터 보간 파장 일치
             L_Si_new = making.make_new_Si(L_Si_nm, L_SiO2nm_on_Si_new);
             L_SiO2_new = making.make_new_SiO2(L_SiO2_nm, L_SiO2nm_on_Si_new);
             L_SiN_new = making.make_new_SiN(L_SiN, L_SiO2nm_on_Si_new);
 
-           
-            //350~ 1000사이의 파장 rs rp
-            foreach (var item in L_SiN_new)
-            {
-                Complex N2 = new Complex(item.n, item.k);
-                Complex theta2 = cal.CalSnell(theta65, 1, N2);
 
-                Complex rp = cal.Calrp(theta65, theta2, 1, N2);
-                Complex rs = cal.Calrs(theta65, theta2, 1, N2);
-                Complex p = rp / rs;
-                double alpha = cal.calculateAlpha_cal(theta45, rs, rp);
-                double beta = cal.calculateBeta_cal(theta45, rs, rp);
-                //Console.WriteLine(alpha + "  " + beta);
-
-            }
-
-
-
+            //1-3
             //700nm에서 rs rp 
             int k = 0;
             for (int i = 0; i < L_Si_new.Count; i++)
@@ -80,6 +66,25 @@ namespace ConsoleApp1
                 //Console.WriteLine(i+"\t"+Rs_r + "\t" + Rs_p);
                 //Console.WriteLine(Rs_r + " " + Rs_p);
             }
+
+            //350~ 1000사이의 파장 rs rp
+            foreach (var item in L_SiN_new)
+            {
+                Complex N2 = new Complex(item.n, item.k);
+                Complex theta2 = cal.CalSnell(theta65, 1, N2);
+
+                Complex rp = cal.Calrp(theta65, theta2, 1, N2);
+                Complex rs = cal.Calrs(theta65, theta2, 1, N2);
+                Complex p = rp / rs;
+                double alpha = cal.calculateAlpha_cal(theta45, rs, rp);
+                double beta = cal.calculateBeta_cal(theta45, rs, rp);
+                //Console.WriteLine(alpha + "  " + beta);
+
+            }
+
+
+
+           
 
             //mse 계산
             double mse_65 = 0;
