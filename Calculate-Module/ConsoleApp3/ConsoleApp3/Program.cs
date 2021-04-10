@@ -242,9 +242,9 @@ namespace ConsoleApp3
     {
         static void Main(string[] args)
         {
-            string[] Si_DataPath = System.IO.File.ReadAllLines(@"C:/Users/mhshi/Documents/Data/Si_new.txt");
-            string[] SiN_DataPath = System.IO.File.ReadAllLines(@"C:/Users/mhshi/Documents/Data/SiN_new.txt");
-            string[] SiO2_DataPath = System.IO.File.ReadAllLines(@"C:/Users/mhshi/Documents/Data/SiO2_new.txt");
+            string[] Si_DataPath = System.IO.File.ReadAllLines(@"C:/Users/mhshi/OneDrive/문서/Data/Si_new.txt");
+            string[] SiN_DataPath = System.IO.File.ReadAllLines(@"C:/Users/mhshi/OneDrive/문서/Data/SiN_new.txt");
+            string[] SiO2_DataPath = System.IO.File.ReadAllLines(@"C:/Users/mhshi/OneDrive/문서/Data/SiO2_new.txt");
 
             string[] replace = { "", ",", "\t", "\n" };
 
@@ -271,11 +271,130 @@ namespace ConsoleApp3
                 Material SiO2_Material = new Material(lambda_SiO2, n_SiO2, k_SiO2);
                 SiO2_Data.Add(SiO2_Material);
             }
-            //// Double ForLoop + Recursive Function + Parallel
+            #region 이중 For 문 + 재귀함수 + 병렬 처리
+            // Double ForLoop + Recursive Function + Parallel
 
             //int from = 0;
             //int to = 100;
-            //int taskCount = 5;
+            //int taskCount = 10;
+            //Complex N_0 = new Complex(1, -0);
+            //Complex theta_0 = new Complex(degToRad(65), 0);
+            //Complex Sintheta_0 = Complex.Sin(theta_0);
+
+            //Func<object, List<MSpectrum>> TFthicknessFunc = (objRange) =>
+            //{
+            //    int[] range = (int[])objRange;
+            //    List<MSpectrum> multiCal = new List<MSpectrum>();
+            //    for (int i = range[0]; i < range[1]; i++)
+            //    {
+            //        DateTime start = DateTime.Now;
+            //        for (int n = 0; n < SiN_Data.Count; n++)
+            //        {
+            //            double n_SiO2_350 = SiO2_Data[n].RefractIdx;
+            //            double k_SiO2_350 = SiO2_Data[n].ExtinctCoeff;
+            //            double n_SiN_350 = SiN_Data[n].RefractIdx;
+            //            double k_SiN_350 = SiN_Data[n].ExtinctCoeff;
+
+            //            Complex N_1 = new Complex(n_SiO2_350, -k_SiO2_350);
+            //            Complex theta_1 = Complex.Asin((N_0 * Sintheta_0) / N_1);
+
+            //            Complex r01_p = refCoeff_p(N_0, N_1, theta_0, theta_1);
+            //            Complex t01_p = transCoeff_p(N_0, N_1, theta_0, theta_1);
+            //            Complex r01_s = refCoeff_s(N_0, N_1, theta_0, theta_1);
+            //            Complex t01_s = transCoeff_s(N_0, N_1, theta_0, theta_1);
+
+            //            Complex[,] Interface_01_p = Interface_ij(r01_p, t01_p);
+            //            Complex[,] Layer_1 = Layer_j(theta_1, 30, SiO2_Data[n].Wavelength, N_1);
+            //            Complex[,] SMatrix_p = ComplexMatrixMultiply(Interface_01_p, Layer_1);
+            //            Complex[,] Interface_01_s = Interface_ij(r01_s, t01_s);
+            //            Complex[,] SMatrix_s = ComplexMatrixMultiply(Interface_01_s, Layer_1);
+
+            //            Complex N_2 = new Complex(n_SiN_350, -k_SiN_350);
+            //            Complex theta_2 = Complex.Asin((N_1 * Complex.Sin(theta_1)) / N_2);
+            //            Complex theta_3 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_1);
+
+            //            SMatrix_p = sMat_p(N_1, N_2, theta_1, theta_2, theta_3, 20, 30, SiN_Data[n].Wavelength, SiO2_Data[n].Wavelength, SMatrix_p, 1, 1000);
+            //            SMatrix_s = sMat_s(N_1, N_2, theta_1, theta_2, theta_3, 20, 30, SiN_Data[n].Wavelength, SiO2_Data[n].Wavelength, SMatrix_s, 1, 1000);
+
+            //            Complex N_201 = new Complex(Si_Data[n].RefractIdx, -Si_Data[n].ExtinctCoeff);
+            //            Complex theta201 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_201);
+
+            //            Complex r_200_201_p = refCoeff_p(N_2, N_201, theta_2, theta201);
+            //            Complex r_200_201_s = refCoeff_s(N_2, N_201, theta_2, theta201);
+            //            Complex t_200_201_p = transCoeff_p(N_2, N_201, theta_2, theta201);
+            //            Complex t_200_201_s = transCoeff_s(N_2, N_201, theta_2, theta201);
+
+            //            Complex[,] Interface_200_201_p = Interface_ij(r_200_201_p, t_200_201_p);
+            //            Complex[,] Interface_200_201_s = Interface_ij(r_200_201_s, t_200_201_s);
+
+            //            SMatrix_p = ComplexMatrixMultiply(SMatrix_p, Interface_200_201_p);
+            //            SMatrix_s = ComplexMatrixMultiply(SMatrix_s, Interface_200_201_s);
+
+
+            //            double alpha = calcAlpha(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
+            //            double beta = calcBeta(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
+            //            Console.WriteLine(i + " " + SiN_Data[n].Wavelength + "," + alpha + "," + beta);
+            //            MSpectrum calSpectrum = new MSpectrum(SiN_Data[n].Wavelength, 65, alpha, beta);
+            //            multiCal.Add(calSpectrum);
+            //        }
+            //        DateTime end = DateTime.Now;
+            //        TimeSpan duration = end - start;
+            //        Console.WriteLine(duration);
+            //    }
+            //    return multiCal;
+            //};
+
+            //Task<List<MSpectrum>>[] tasks = new Task<List<MSpectrum>>[taskCount];
+            //int currentFrom = from;
+            //int currentTo = to / tasks.Length;
+            //for (int i = 0; i < tasks.Length; i++)
+            //{
+            //    Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
+
+            //    tasks[i] = new Task<List<MSpectrum>>(TFthicknessFunc, new int[] { currentFrom, currentTo });
+            //    currentFrom = currentTo + 1;
+            //    if (i == tasks.Length - 2)
+            //    {
+            //        currentTo = to;
+            //    }
+            //    else
+            //    {
+            //        currentTo = currentTo + (to / tasks.Length);
+            //    }
+            //}
+            //Console.ReadLine();
+            //Console.WriteLine("Start!");
+            //DateTime startTime = DateTime.Now;
+            //Console.WriteLine(startTime);
+            //foreach (Task<List<MSpectrum>> task in tasks)
+            //    task.Start();
+
+            //List<MSpectrum> total = new List<MSpectrum>();
+            //foreach (Task<List<MSpectrum>> task in tasks)
+            //{
+
+            //    task.Wait();
+            //    total.AddRange(task.Result.ToArray());
+
+            //}
+
+            //DateTime endTime = DateTime.Now;
+            //TimeSpan elapsed = endTime - startTime;
+            //Console.WriteLine();
+            //Console.WriteLine("{0} {1}", elapsed, total.Count);
+            //Console.ReadLine();
+            //Console.Clear();
+            //for (int i = 0; i < total.Count; i++)
+            //{
+            //    Console.WriteLine(i + " " + total[i].ToString());
+            //}
+            #endregion
+
+            #region  삼중 For 문 + 병렬 처리
+            // Triple ForLoop + Parallel
+            //int from = 0;
+            //int to = 100;
+            //int taskCount = 10;
             //Complex N_0 = new Complex(1, -0);
             //Complex theta_0 = new Complex(degToRad(65), 0);
             //Complex Sintheta_0 = Complex.Sin(theta_0);
@@ -316,8 +435,33 @@ namespace ConsoleApp3
 
 
 
-            //            SMatrix_p = sMat_p(N_1, N_2, theta_1, theta_2, theta_3, 20, 30, SiN_Data[n].Wavelength, SiO2_Data[n].Wavelength, SMatrix_p, 1, 1000);
-            //            SMatrix_s = sMat_s(N_1, N_2, theta_1, theta_2, theta_3, 20, 30, SiN_Data[n].Wavelength, SiO2_Data[n].Wavelength, SMatrix_s, 1, 1000);
+            //            for (int j = 1; j <= 1000; j++)
+            //            {
+            //                if (j % 2 == 0)
+            //                {
+            //                    Complex r_ij_p = refCoeff_p(N_1, N_2, theta_1, theta_2);
+            //                    Complex r_ij_s = refCoeff_s(N_1, N_2, theta_1, theta_2);
+            //                    Complex t_ij_p = transCoeff_p(N_1, N_2, theta_1, theta_2);
+            //                    Complex t_ij_s = transCoeff_s(N_1, N_2, theta_1, theta_2);
+            //                    Complex[,] interface_ij_p = Interface_ij(r_ij_p, t_ij_p);
+            //                    Complex[,] interface_ij_s = Interface_ij(r_ij_s, t_ij_s);
+            //                    Complex[,] layer_j = Layer_j(theta_2, 20, SiN_Data[n].Wavelength, N_2);
+            //                    SMatrix_p = ComplexMatrixMultiply(SMatrix_p, ComplexMatrixMultiply(interface_ij_p, layer_j));
+            //                    SMatrix_s = ComplexMatrixMultiply(SMatrix_s, ComplexMatrixMultiply(interface_ij_s, layer_j));
+            //                }
+            //                else
+            //                {
+            //                    Complex r_ij_p = refCoeff_p(N_2, N_1, theta_2, theta_3);
+            //                    Complex r_ij_s = refCoeff_s(N_2, N_1, theta_2, theta_3);
+            //                    Complex t_ij_p = transCoeff_p(N_2, N_1, theta_2, theta_3);
+            //                    Complex t_ij_s = transCoeff_s(N_2, N_1, theta_2, theta_3);
+            //                    Complex[,] interface_ij_p = Interface_ij(r_ij_p, t_ij_p);
+            //                    Complex[,] interface_ij_s = Interface_ij(r_ij_s, t_ij_s);
+            //                    Complex[,] layer_j = Layer_j(theta_3, 30, SiO2_Data[n].Wavelength, N_1);
+            //                    SMatrix_p = ComplexMatrixMultiply(SMatrix_p, ComplexMatrixMultiply(interface_ij_p, layer_j));
+            //                    SMatrix_s = ComplexMatrixMultiply(SMatrix_s, ComplexMatrixMultiply(interface_ij_s, layer_j));
+            //                }
+            //            }
 
             //            Complex N_201 = new Complex(Si_Data[n].RefractIdx, -Si_Data[n].ExtinctCoeff);
             //            Complex theta201 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_201);
@@ -336,7 +480,7 @@ namespace ConsoleApp3
 
             //            double alpha = calcAlpha(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
             //            double beta = calcBeta(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
-            //            Console.WriteLine(i + " " + SiN_Data[n].Wavelength + "," + alpha + "," + beta);
+            //            //Console.WriteLine(i + " " + SiN_Data[n].Wavelength + "," + alpha + "," + beta);
             //            MSpectrum calSpectrum = new MSpectrum(SiN_Data[n].Wavelength, 65, alpha, beta);
             //            multiCal.Add(calSpectrum);
             //        }
@@ -391,154 +535,9 @@ namespace ConsoleApp3
             //{
             //    Console.WriteLine(i + " " + total[i].ToString());
             //}
+            #endregion
 
-            //// Triple ForLoop + Parallel
-
-            int from = 0;
-            int to = 100;
-            int taskCount = 5;
-            Complex N_0 = new Complex(1, -0);
-            Complex theta_0 = new Complex(degToRad(65), 0);
-            Complex Sintheta_0 = Complex.Sin(theta_0);
-
-            Func<object, List<MSpectrum>> TFthicknessFunc = (objRange) =>
-            {
-                int[] range = (int[])objRange;
-                List<MSpectrum> multiCal = new List<MSpectrum>();
-                for (int i = range[0]; i < range[1]; i++)
-                {
-                    DateTime start = DateTime.Now;
-                    for (int n = 0; n < SiN_Data.Count; n++)
-                    {
-                        double n_SiO2_350 = SiO2_Data[n].RefractIdx;
-                        double k_SiO2_350 = SiO2_Data[n].ExtinctCoeff;
-                        double n_SiN_350 = SiN_Data[n].RefractIdx;
-                        double k_SiN_350 = SiN_Data[n].ExtinctCoeff;
-
-
-
-                        Complex N_1 = new Complex(n_SiO2_350, -k_SiO2_350);
-                        Complex theta_1 = Complex.Asin((N_0 * Sintheta_0) / N_1);
-
-                        Complex r01_p = refCoeff_p(N_0, N_1, theta_0, theta_1);
-                        Complex t01_p = transCoeff_p(N_0, N_1, theta_0, theta_1);
-                        Complex r01_s = refCoeff_s(N_0, N_1, theta_0, theta_1);
-                        Complex t01_s = transCoeff_s(N_0, N_1, theta_0, theta_1);
-
-                        Complex[,] Interface_01_p = Interface_ij(r01_p, t01_p);
-                        Complex[,] Layer_1 = Layer_j(theta_1, 30, SiO2_Data[n].Wavelength, N_1);
-                        Complex[,] SMatrix_p = ComplexMatrixMultiply(Interface_01_p, Layer_1);
-                        Complex[,] Interface_01_s = Interface_ij(r01_s, t01_s);
-                        Complex[,] SMatrix_s = ComplexMatrixMultiply(Interface_01_s, Layer_1);
-
-                        Complex N_2 = new Complex(n_SiN_350, -k_SiN_350);
-                        Complex theta_2 = Complex.Asin((N_1 * Complex.Sin(theta_1)) / N_2);
-                        Complex theta_3 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_1);
-
-
-
-                        for (int j = 1; j <= 1000; j++)
-                        {
-                            if (j % 2 == 0)
-                            {
-                                Complex r_ij_p = refCoeff_p(N_1, N_2, theta_1, theta_2);
-                                Complex r_ij_s = refCoeff_s(N_1, N_2, theta_1, theta_2);
-                                Complex t_ij_p = transCoeff_p(N_1, N_2, theta_1, theta_2);
-                                Complex t_ij_s = transCoeff_s(N_1, N_2, theta_1, theta_2);
-                                Complex[,] interface_ij_p = Interface_ij(r_ij_p, t_ij_p);
-                                Complex[,] interface_ij_s = Interface_ij(r_ij_s, t_ij_s);
-                                Complex[,] layer_j = Layer_j(theta_2, 20, SiN_Data[n].Wavelength, N_2);
-                                SMatrix_p = ComplexMatrixMultiply(SMatrix_p, ComplexMatrixMultiply(interface_ij_p, layer_j));
-                                SMatrix_s = ComplexMatrixMultiply(SMatrix_s, ComplexMatrixMultiply(interface_ij_s, layer_j));
-                            }
-                            else
-                            {
-                                Complex r_ij_p = refCoeff_p(N_2, N_1, theta_2, theta_3);
-                                Complex r_ij_s = refCoeff_s(N_2, N_1, theta_2, theta_3);
-                                Complex t_ij_p = transCoeff_p(N_2, N_1, theta_2, theta_3);
-                                Complex t_ij_s = transCoeff_s(N_2, N_1, theta_2, theta_3);
-                                Complex[,] interface_ij_p = Interface_ij(r_ij_p, t_ij_p);
-                                Complex[,] interface_ij_s = Interface_ij(r_ij_s, t_ij_s);
-                                Complex[,] layer_j = Layer_j(theta_3, 30, SiO2_Data[n].Wavelength, N_1);
-                                SMatrix_p = ComplexMatrixMultiply(SMatrix_p, ComplexMatrixMultiply(interface_ij_p, layer_j));
-                                SMatrix_s = ComplexMatrixMultiply(SMatrix_s, ComplexMatrixMultiply(interface_ij_s, layer_j));
-                            }
-                        }
-
-                        Complex N_201 = new Complex(Si_Data[n].RefractIdx, -Si_Data[n].ExtinctCoeff);
-                        Complex theta201 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_201);
-
-                        Complex r_200_201_p = refCoeff_p(N_2, N_201, theta_2, theta201);
-                        Complex r_200_201_s = refCoeff_s(N_2, N_201, theta_2, theta201);
-                        Complex t_200_201_p = transCoeff_p(N_2, N_201, theta_2, theta201);
-                        Complex t_200_201_s = transCoeff_s(N_2, N_201, theta_2, theta201);
-
-                        Complex[,] Interface_200_201_p = Interface_ij(r_200_201_p, t_200_201_p);
-                        Complex[,] Interface_200_201_s = Interface_ij(r_200_201_s, t_200_201_s);
-
-                        SMatrix_p = ComplexMatrixMultiply(SMatrix_p, Interface_200_201_p);
-                        SMatrix_s = ComplexMatrixMultiply(SMatrix_s, Interface_200_201_s);
-
-
-                        double alpha = calcAlpha(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
-                        double beta = calcBeta(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
-                        //Console.WriteLine(i + " " + SiN_Data[n].Wavelength + "," + alpha + "," + beta);
-                        MSpectrum calSpectrum = new MSpectrum(SiN_Data[n].Wavelength, 65, alpha, beta);
-                        multiCal.Add(calSpectrum);
-                    }
-                    DateTime end = DateTime.Now;
-                    TimeSpan duration = end - start;
-                    Console.WriteLine(duration);
-                }
-                return multiCal;
-            };
-
-            Task<List<MSpectrum>>[] tasks = new Task<List<MSpectrum>>[taskCount];
-            int currentFrom = from;
-            int currentTo = to / tasks.Length;
-            for (int i = 0; i < tasks.Length; i++)
-            {
-                Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
-
-                tasks[i] = new Task<List<MSpectrum>>(TFthicknessFunc, new int[] { currentFrom, currentTo });
-                currentFrom = currentTo + 1;
-                if (i == tasks.Length)
-                {
-                    currentTo = to;
-                }
-                else
-                {
-                    currentTo = currentTo + (to / tasks.Length);
-                }
-            }
-            Console.ReadLine();
-            Console.WriteLine("Start!");
-            DateTime startTime = DateTime.Now;
-            Console.WriteLine(startTime);
-            foreach (Task<List<MSpectrum>> task in tasks)
-                task.Start();
-
-            List<MSpectrum> total = new List<MSpectrum>();
-            foreach (Task<List<MSpectrum>> task in tasks)
-            {
-
-                task.Wait();
-                total.AddRange(task.Result.ToArray());
-
-            }
-
-            DateTime endTime = DateTime.Now;
-            TimeSpan elapsed = endTime - startTime;
-            Console.WriteLine();
-            Console.WriteLine("{0} {1}", elapsed, total.Count);
-            Console.ReadLine();
-            Console.Clear();
-            for (int i = 0; i < total.Count; i++)
-            {
-                Console.WriteLine(i + " " + total[i].ToString());
-            }
-
-
+            #region 삼중 For 문
             /// Triple ForLoop
             //DateTime startTime = DateTime.Now;
             //for (int cnt = 0; cnt < 100; cnt++)
@@ -639,8 +638,9 @@ namespace ConsoleApp3
             //DateTime endTime = DateTime.Now;
             //TimeSpan elapsed = endTime - startTime;
             //Console.WriteLine(elapsed);
+            #endregion
 
-
+            #region 이중 For 문 + 재귀 함수
             // DoubleLoop + Recursive Function
             //DateTime start = DateTime.Now;
             //for (int cnt = 0; cnt < 100; cnt++)
@@ -718,6 +718,268 @@ namespace ConsoleApp3
             //DateTime end = DateTime.Now;
             //TimeSpan duration = end - start;
             //Console.WriteLine(duration);
+            #endregion
+
+            #region 삼중 For 문 + 병렬 처리(반복 횟수 감축)
+            //int from = 0;
+            //int to = 100;
+            //int taskCount = 5;
+            //Complex N_0 = new Complex(1, -0);
+            //Complex theta_0 = new Complex(degToRad(65), 0);
+            //Complex Sintheta_0 = Complex.Sin(theta_0);
+
+            //Func<object, List<MSpectrum>> TFthicknessFunc = (objRange) =>
+            //{
+            //    int[] range = (int[])objRange;
+            //    List<MSpectrum> multiCal = new List<MSpectrum>();
+            //    for (int i = range[0]; i < range[1]; i++)
+            //    {
+            //        DateTime start = DateTime.Now;
+            //        for (int n = 0; n < SiN_Data.Count; n++)
+            //        {
+            //            double n_SiO2_350 = SiO2_Data[n].RefractIdx;
+            //            double k_SiO2_350 = SiO2_Data[n].ExtinctCoeff;
+            //            double n_SiN_350 = SiN_Data[n].RefractIdx;
+            //            double k_SiN_350 = SiN_Data[n].ExtinctCoeff;
+
+
+
+            //            Complex N_1 = new Complex(n_SiO2_350, -k_SiO2_350);
+            //            Complex theta_1 = Complex.Asin((N_0 * Sintheta_0) / N_1);
+
+            //            Complex r01_p = refCoeff_p(N_0, N_1, theta_0, theta_1);
+            //            Complex t01_p = transCoeff_p(N_0, N_1, theta_0, theta_1);
+            //            Complex r01_s = refCoeff_s(N_0, N_1, theta_0, theta_1);
+            //            Complex t01_s = transCoeff_s(N_0, N_1, theta_0, theta_1);
+
+            //            Complex[,] Interface_01_p = Interface_ij(r01_p, t01_p);
+            //            Complex[,] Layer_1 = Layer_j(theta_1, 30, SiO2_Data[n].Wavelength, N_1);
+            //            Complex[,] SMatrix_p = ComplexMatrixMultiply(Interface_01_p, Layer_1);
+            //            Complex[,] Interface_01_s = Interface_ij(r01_s, t01_s);
+            //            Complex[,] SMatrix_s = ComplexMatrixMultiply(Interface_01_s, Layer_1);
+
+            //            Complex N_2 = new Complex(n_SiN_350, -k_SiN_350);
+            //            Complex theta_2 = Complex.Asin((N_1 * Complex.Sin(theta_1)) / N_2);
+            //            Complex theta_3 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_1);
+
+
+
+            //            for (int j = 1; j <= 500; j++)
+            //            {
+
+            //                Complex r_ij_p_SIN = refCoeff_p(N_1, N_2, theta_1, theta_2);
+            //                Complex r_ij_s_SIN = refCoeff_s(N_1, N_2, theta_1, theta_2);
+            //                Complex t_ij_p_SIN = transCoeff_p(N_1, N_2, theta_1, theta_2);
+            //                Complex t_ij_s_SIN = transCoeff_s(N_1, N_2, theta_1, theta_2);
+            //                Complex[,] interface_ij_p_SIN = Interface_ij(r_ij_p_SIN, t_ij_p_SIN);
+            //                Complex[,] interface_ij_s_SIN = Interface_ij(r_ij_s_SIN, t_ij_s_SIN);
+            //                Complex[,] layer_j_SIN = Layer_j(theta_2, 20, SiN_Data[n].Wavelength, N_2);
+            //                SMatrix_p = ComplexMatrixMultiply(SMatrix_p, ComplexMatrixMultiply(interface_ij_p_SIN, layer_j_SIN));
+            //                SMatrix_s = ComplexMatrixMultiply(SMatrix_s, ComplexMatrixMultiply(interface_ij_s_SIN, layer_j_SIN));
+
+
+            //                Complex r_ij_p_SIO2 = refCoeff_p(N_2, N_1, theta_2, theta_3);
+            //                Complex r_ij_s_SIO2 = refCoeff_s(N_2, N_1, theta_2, theta_3);
+            //                Complex t_ij_p_SIO2 = transCoeff_p(N_2, N_1, theta_2, theta_3);
+            //                Complex t_ij_s_SIO2 = transCoeff_s(N_2, N_1, theta_2, theta_3);
+            //                Complex[,] interface_ij_p_SI02 = Interface_ij(r_ij_p_SIO2, t_ij_p_SIO2);
+            //                Complex[,] interface_ij_s_SIO2 = Interface_ij(r_ij_s_SIO2, t_ij_s_SIO2);
+            //                Complex[,] layer_j_SIO2 = Layer_j(theta_3, 30, SiO2_Data[n].Wavelength, N_1);
+            //                SMatrix_p = ComplexMatrixMultiply(SMatrix_p, ComplexMatrixMultiply(interface_ij_p_SI02, layer_j_SIO2));
+            //                SMatrix_s = ComplexMatrixMultiply(SMatrix_s, ComplexMatrixMultiply(interface_ij_s_SIO2, layer_j_SIO2));
+
+            //            }
+
+            //            Complex N_201 = new Complex(Si_Data[n].RefractIdx, -Si_Data[n].ExtinctCoeff);
+            //            Complex theta201 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_201);
+
+            //            Complex r_200_201_p = refCoeff_p(N_2, N_201, theta_2, theta201);
+            //            Complex r_200_201_s = refCoeff_s(N_2, N_201, theta_2, theta201);
+            //            Complex t_200_201_p = transCoeff_p(N_2, N_201, theta_2, theta201);
+            //            Complex t_200_201_s = transCoeff_s(N_2, N_201, theta_2, theta201);
+
+            //            Complex[,] Interface_200_201_p = Interface_ij(r_200_201_p, t_200_201_p);
+            //            Complex[,] Interface_200_201_s = Interface_ij(r_200_201_s, t_200_201_s);
+
+            //            SMatrix_p = ComplexMatrixMultiply(SMatrix_p, Interface_200_201_p);
+            //            SMatrix_s = ComplexMatrixMultiply(SMatrix_s, Interface_200_201_s);
+
+
+            //            double alpha = calcAlpha(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
+            //            double beta = calcBeta(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
+            //            //Console.WriteLine(i + " " + SiN_Data[n].Wavelength + "," + alpha + "," + beta);
+            //            MSpectrum calSpectrum = new MSpectrum(SiN_Data[n].Wavelength, 65, alpha, beta);
+            //            multiCal.Add(calSpectrum);
+            //        }
+            //        DateTime end = DateTime.Now;
+            //        TimeSpan duration = end - start;
+            //        Console.WriteLine(duration);
+            //    }
+            //    return multiCal;
+            //};
+
+            //Task<List<MSpectrum>>[] tasks = new Task<List<MSpectrum>>[taskCount];
+            //int currentFrom = from;
+            //int currentTo = to / tasks.Length;
+            //for (int i = 0; i < tasks.Length; i++)
+            //{
+            //    Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
+
+            //    tasks[i] = new Task<List<MSpectrum>>(TFthicknessFunc, new int[] { currentFrom, currentTo });
+            //    currentFrom = currentTo + 1;
+            //    if (i == tasks.Length)
+            //    {
+            //        currentTo = to;
+            //    }
+            //    else
+            //    {
+            //        currentTo = currentTo + (to / tasks.Length);
+            //    }
+            //}
+            //Console.ReadLine();
+            //Console.WriteLine("Start!");
+            //DateTime startTime = DateTime.Now;
+            //Console.WriteLine(startTime);
+            //foreach (Task<List<MSpectrum>> task in tasks)
+            //    task.Start();
+
+            //List<MSpectrum> total = new List<MSpectrum>();
+            //foreach (Task<List<MSpectrum>> task in tasks)
+            //{
+
+            //    task.Wait();
+            //    total.AddRange(task.Result.ToArray());
+
+            //}
+
+            //DateTime endTime = DateTime.Now;
+            //TimeSpan elapsed = endTime - startTime;
+            //Console.WriteLine();
+            //Console.WriteLine("{0} {1}", elapsed, total.Count);
+            //Console.ReadLine();
+            //Console.Clear();
+            //for (int i = 0; i < total.Count; i++)
+            //{
+            //    Console.WriteLine(i + " " + total[i].ToString());
+            //}
+            #endregion
+
+            #region 이중 For 문 + 재귀 함수 + 병렬 처리 (반복 횟수 감축)
+            int from = 0;
+            int to = 100;
+            int taskCount = 10;
+            Complex N_0 = new Complex(1, -0);
+            Complex theta_0 = new Complex(degToRad(65), 0);
+            Complex Sintheta_0 = Complex.Sin(theta_0);
+
+            Func<object, List<MSpectrum>> TFthicknessFunc = (objRange) =>
+            {
+                int[] range = (int[])objRange;
+                List<MSpectrum> multiCal = new List<MSpectrum>();
+                for (int i = range[0]; i < range[1]; i++)
+                {
+                    DateTime start = DateTime.Now;
+                    for (int n = 0; n < SiN_Data.Count; n++)
+                    {
+                        double n_SiO2_350 = SiO2_Data[n].RefractIdx;
+                        double k_SiO2_350 = SiO2_Data[n].ExtinctCoeff;
+                        double n_SiN_350 = SiN_Data[n].RefractIdx;
+                        double k_SiN_350 = SiN_Data[n].ExtinctCoeff;
+
+                        Complex N_1 = new Complex(n_SiO2_350, -k_SiO2_350);
+                        Complex theta_1 = Complex.Asin((N_0 * Sintheta_0) / N_1);
+
+                        Complex r01_p = refCoeff_p(N_0, N_1, theta_0, theta_1);
+                        Complex t01_p = transCoeff_p(N_0, N_1, theta_0, theta_1);
+                        Complex r01_s = refCoeff_s(N_0, N_1, theta_0, theta_1);
+                        Complex t01_s = transCoeff_s(N_0, N_1, theta_0, theta_1);
+
+                        Complex[,] Interface_01_p = Interface_ij(r01_p, t01_p);
+                        Complex[,] Layer_1 = Layer_j(theta_1, 30, SiO2_Data[n].Wavelength, N_1);
+                        Complex[,] SMatrix_p = ComplexMatrixMultiply(Interface_01_p, Layer_1);
+                        Complex[,] Interface_01_s = Interface_ij(r01_s, t01_s);
+                        Complex[,] SMatrix_s = ComplexMatrixMultiply(Interface_01_s, Layer_1);
+
+                        Complex N_2 = new Complex(n_SiN_350, -k_SiN_350);
+                        Complex theta_2 = Complex.Asin((N_1 * Complex.Sin(theta_1)) / N_2);
+                        Complex theta_3 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_1);
+
+                        SMatrix_p = sMat_p_short(N_1, N_2, theta_1, theta_2, theta_3, 20, 30, SiN_Data[n].Wavelength, SiO2_Data[n].Wavelength, SMatrix_p, 1, 500);
+                        SMatrix_s = sMat_s_short(N_1, N_2, theta_1, theta_2, theta_3, 20, 30, SiN_Data[n].Wavelength, SiO2_Data[n].Wavelength, SMatrix_s, 1, 500);
+
+                        Complex N_201 = new Complex(Si_Data[n].RefractIdx, -Si_Data[n].ExtinctCoeff);
+                        Complex theta201 = Complex.Asin((N_2 * Complex.Sin(theta_2)) / N_201);
+
+                        Complex r_200_201_p = refCoeff_p(N_2, N_201, theta_2, theta201);
+                        Complex r_200_201_s = refCoeff_s(N_2, N_201, theta_2, theta201);
+                        Complex t_200_201_p = transCoeff_p(N_2, N_201, theta_2, theta201);
+                        Complex t_200_201_s = transCoeff_s(N_2, N_201, theta_2, theta201);
+
+                        Complex[,] Interface_200_201_p = Interface_ij(r_200_201_p, t_200_201_p);
+                        Complex[,] Interface_200_201_s = Interface_ij(r_200_201_s, t_200_201_s);
+
+                        SMatrix_p = ComplexMatrixMultiply(SMatrix_p, Interface_200_201_p);
+                        SMatrix_s = ComplexMatrixMultiply(SMatrix_s, Interface_200_201_s);
+
+
+                        double alpha = calcAlpha(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
+                        double beta = calcBeta(SMatrix_s[1, 0] / SMatrix_s[0, 0], SMatrix_p[1, 0] / SMatrix_p[0, 0], 45);
+                        //Console.WriteLine(i + " " + SiN_Data[n].Wavelength + "," + alpha + "," + beta);
+                        MSpectrum calSpectrum = new MSpectrum(SiN_Data[n].Wavelength, 65, alpha, beta);
+                        multiCal.Add(calSpectrum);
+                    }
+                    DateTime end = DateTime.Now;
+                    TimeSpan duration = end - start;
+                    Console.WriteLine(duration);
+                }
+                return multiCal;
+            };
+
+            Task<List<MSpectrum>>[] tasks = new Task<List<MSpectrum>>[taskCount];
+            int currentFrom = from;
+            int currentTo = to / tasks.Length;
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                Console.WriteLine("Task[{0}] : {1} ~ {2}", i, currentFrom, currentTo);
+
+                tasks[i] = new Task<List<MSpectrum>>(TFthicknessFunc, new int[] { currentFrom, currentTo });
+                currentFrom = currentTo + 1;
+                if (i == tasks.Length - 2)
+                {
+                    currentTo = to;
+                }
+                else
+                {
+                    currentTo = currentTo + (to / tasks.Length);
+                }
+            }
+            Console.ReadLine();
+            Console.WriteLine("Start!");
+            DateTime startTime = DateTime.Now;
+            Console.WriteLine(startTime);
+            foreach (Task<List<MSpectrum>> task in tasks)
+                task.Start();
+
+            List<MSpectrum> total = new List<MSpectrum>();
+            foreach (Task<List<MSpectrum>> task in tasks)
+            {
+
+                task.Wait();
+                total.AddRange(task.Result.ToArray());
+
+            }
+
+            DateTime endTime = DateTime.Now;
+            TimeSpan elapsed = endTime - startTime;
+            Console.WriteLine();
+            Console.WriteLine("{0} {1}", elapsed, total.Count);
+            Console.ReadLine();
+            Console.Clear();
+            for (int i = 0; i < total.Count; i++)
+            {
+                Console.WriteLine(i + " " + total[i].ToString());
+            }
+            #endregion
 
         }
         static double degToRad(double degree)
@@ -919,6 +1181,54 @@ namespace ConsoleApp3
                     Complex[,] layer_j = Layer_j(theta_3, d2, lambda2, N_1);
                     s_s = ComplexMatrixMultiply(s_s, ComplexMatrixMultiply(interface_ij_s, layer_j));
                 }
+                return ComplexMatrixMultiply(s_s, sMat_p(N_1, N_2, theta_1, theta_2, theta_3, d1, d2, lambda1, lambda2, s_s, i + 1, n));
+            }
+            else
+            {
+                return s_s;
+            }
+        }
+        static Complex[,] sMat_p_short(Complex N_1, Complex N_2, Complex theta_1, Complex theta_2, Complex theta_3, double d1, double d2, double lambda1, double lambda2, Complex[,] s_p, int i, int n)
+        {
+            if (i != n)
+            {
+                
+                Complex r_ij_p_SiN = refCoeff_p(N_1, N_2, theta_1, theta_2);
+                Complex t_ij_p_SiN = transCoeff_p(N_1, N_2, theta_1, theta_2);
+                Complex[,] interface_ij_p_SiN = Interface_ij(r_ij_p_SiN, t_ij_p_SiN);
+                Complex[,] layer_j_SiN = Layer_j(theta_2, d1, lambda1, N_2);
+                s_p = ComplexMatrixMultiply(s_p, ComplexMatrixMultiply(interface_ij_p_SiN, layer_j_SiN));
+                
+                Complex r_ij_p_SiO2 = refCoeff_p(N_2, N_1, theta_2, theta_3);
+                Complex t_ij_p_SiO2 = transCoeff_p(N_2, N_1, theta_2, theta_3);
+                Complex[,] interface_ij_p_SiO2 = Interface_ij(r_ij_p_SiO2, t_ij_p_SiO2);
+                Complex[,] layer_j_SiO2 = Layer_j(theta_3, d2, lambda2, N_1);
+                s_p = ComplexMatrixMultiply(s_p, ComplexMatrixMultiply(interface_ij_p_SiO2, layer_j_SiO2));
+                
+                return ComplexMatrixMultiply(s_p, sMat_p(N_1, N_2, theta_1, theta_2, theta_3, d1, d2, lambda1, lambda2, s_p, i + 1, n));
+            }
+            else
+            {
+                return s_p;
+            }
+        }
+        static Complex[,] sMat_s_short(Complex N_1, Complex N_2, Complex theta_1, Complex theta_2, Complex theta_3, double d1, double d2, double lambda1, double lambda2, Complex[,] s_s, int i, int n)
+        {
+            if (i != n)
+            {
+                
+                Complex r_ij_s_SiN = refCoeff_s(N_1, N_2, theta_1, theta_2);
+                Complex t_ij_s_SiN = transCoeff_s(N_1, N_2, theta_1, theta_2);
+                Complex[,] interface_ij_s_SiN = Interface_ij(r_ij_s_SiN, t_ij_s_SiN);
+                Complex[,] layer_j_SiN = Layer_j(theta_2, d1, lambda1, N_2);
+                s_s = ComplexMatrixMultiply(s_s, ComplexMatrixMultiply(interface_ij_s_SiN, layer_j_SiN));
+                                
+                Complex r_ij_s_SiO2 = refCoeff_s(N_2, N_1, theta_2, theta_3);
+                Complex t_ij_s_SiO2 = transCoeff_s(N_2, N_1, theta_2, theta_3);
+                Complex[,] interface_ij_s_SiO2 = Interface_ij(r_ij_s_SiO2, t_ij_s_SiO2);
+                Complex[,] layer_j_SiO2 = Layer_j(theta_3, d2, lambda2, N_1);
+                s_s = ComplexMatrixMultiply(s_s, ComplexMatrixMultiply(interface_ij_s_SiO2, layer_j_SiO2));
+                
                 return ComplexMatrixMultiply(s_s, sMat_p(N_1, N_2, theta_1, theta_2, theta_3, d1, d2, lambda1, lambda2, s_s, i + 1, n));
             }
             else
